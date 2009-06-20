@@ -235,7 +235,6 @@ Some parts are not lexical.
 
 C<sub> signatures have bugs inherited from L<signatures>.  See their bug queue.
 
-Currently relying on an unreleased version of Method::Signatures.
 
 =head1 NOTES
 
