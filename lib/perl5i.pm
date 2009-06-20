@@ -212,11 +212,30 @@ so they can be called on arrays and arrayrefs.
 L<autobox::dump> defines a C<perl> method that returns L<Data::Dumper>
 style serialization of the results of the expression.
 
+=head2 signatures
+
+Adds argument signatures to C<<sub>>.  For example.
+
+    sub add($this, $that) {
+        return $this + $that;
+    }
+
+The full syntax is documented in L<Method::Signatures>, just without
+the invocant.
+
+=head2 Method::Signatures
+
+Uses L<Method::Signatures> to add a C<<method>> keyword with argument
+signatures.
+
 
 =head1 BUGS
 
 Some parts are not lexical.
 
+C<sub> signatures have bugs inherited from L<signatures>.  See their bug queue.
+
+Currently relying on an unreleased version of Method::Signatures.
 
 =head1 NOTES
 
@@ -225,6 +244,8 @@ F<http://www.modernperlbooks.com/mt/2009/04/ugly-perl-a-lesson-in-the-importance
 
 I totally didn't come up with the "Perl 5 + i" joke.  I think it was
 Damian Conway.
+
+One of the Postgres guys said "perl 5 + i?  Perl is complex enough already!"
 
 
 =head1 LICENSE
@@ -272,7 +293,8 @@ sub import {
 
     load_in_caller( $caller => (
         ["CLASS"], ["Module::Load"], ["File::chdir"],
-        [English => qw(-no_match_vars)]
+        ["Method::Signatures"],
+        [English => qw(-no_match_vars)],
     ) );
 
     # Turn autoboxing on in our caller
