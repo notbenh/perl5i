@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use Module::Load;
 use Carp;
+use Sub::Uplevel;
 
 our $VERSION = '20090614';
 
@@ -225,6 +226,7 @@ use parent 'autodie';
 use parent 'autobox::List::Util';
 use parent 'autobox::Core';
 use parent 'autobox::dump';
+use parent 'perl5i::signatures';
 
 ## no critic (Subroutines::RequireArgUnpacking)
 sub import {
@@ -243,11 +245,12 @@ sub import {
 
     load_in_caller( $caller => ( ["CLASS"], ["Module::Load"], ["File::chdir"] ) );
 
-    # Have to call both or it won't work.
+    # Turn autoboxing on in our caller
     autobox::import($class);
     autobox::List::Util::import($class);
     autobox::Core::import($class);
     autobox::dump::import($class);
+
 
     # Export our gmtime() and localtime()
     alias( $caller, 'gmtime',    \&dt_gmtime );
@@ -256,6 +259,7 @@ sub import {
     alias( $caller, 'alias',     \&alias );
     alias( $caller, 'stat',      \&stat );
     alias( $caller, 'lstat',     \&lstat );
+
 
     # fix die so that it always returns 255
     *CORE::GLOBAL::die = sub {
@@ -268,6 +272,15 @@ sub import {
         local $! = 255;
         return CORE::die($error);
     };
+
+
+    # signatures.pm has to be forcibly convinced to export
+    # into our caller.
+    {
+        my @caller = caller;
+        my $func = perl5i::signatures->can("import");
+        uplevel 1, $func, "perl5i::signatures";
+    }
 
     # autodie needs a bit more convincing
     @_ = ( $class, ":all" );
