@@ -36,6 +36,20 @@ use perl5i;
 }
 
 
+# Test that data binding works
+{
+    sub strip(\$string) {
+        $string =~ s/^\s+//;
+        $string =~ s/\s+$//;
+        return;
+    }
+
+    my $string = "  foo  ";
+    strip(\$string);
+    is $string, "foo";
+}
+
+
 {
     is eval "42", 42;
 }
