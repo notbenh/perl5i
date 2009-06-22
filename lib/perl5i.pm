@@ -6,6 +6,7 @@ use 5.010;
 use strict;
 use warnings;
 use Module::Load;
+use IO::Handle;
 use Carp;
 use Sub::Uplevel;
 use perl5i::DateTime;
@@ -178,6 +179,15 @@ L<Module::Load> adds C<load> which will load a module from a scalar
 without requiring you to do funny things like C<eval require $module>.
 
 
+=head2 IO::Handle
+
+Turns filehandles into objects so you can call methods on them.  The
+biggest one is C<autoflush> rather than mucking around with C<$|> and
+C<select>.
+
+    $fh->autoflush(1);
+
+
 =head2 autodie
 
 L<autodie> causes system and file calls which can fail
@@ -246,6 +256,16 @@ Damian Conway.
 
 One of the Postgres guys said "perl 5 + i?  Perl is complex enough already!"
 
+
+=head1 THANKS
+
+Thanks to our contributors: Chas Owens, Darian Patrick, rjbs,
+chromatic and Ben Hengst.
+
+Thanks to Flavian and Matt Trout for their signature and
+Devel::Declare work.
+
+Thanks to all the CPAN authors upon whom this builds.
 
 =head1 LICENSE
 
