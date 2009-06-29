@@ -8,7 +8,6 @@ use warnings;
 use Module::Load;
 use IO::Handle;
 use Carp;
-use Sub::Uplevel;
 use perl5i::DateTime;
 
 our $VERSION = '20090614';
@@ -348,14 +347,8 @@ sub import {
         return CORE::die($error);
     };
 
-
-    # signatures.pm has to be forcibly convinced to export
-    # into our caller.
-    {
-        my @caller = caller;
-        my $func = perl5i::signatures->can("import");
-        uplevel 1, $func, "perl5i::signatures";
-    }
+    # Convince signatures.pm to export to our caller
+    $class->setup_for($caller);
 
     # autodie needs a bit more convincing
     @_ = ( $class, ":all" );
