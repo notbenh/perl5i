@@ -6,13 +6,13 @@ use warnings;
 sub new { 
    require Object::Internal::0;
    my ($class, @opts) = @_;
-   bless { _internal = Object::Internal::0->new(@opts),
+   bless { _internal => Object::Internal::0->new(@opts),
          }, $class;
 }
 
 sub mu {shift->_internal};
 
-
+1;
 
 __END__
 # Be very careful not to import anything.
