@@ -3,6 +3,18 @@ package Object;
 use strict;
 use warnings;
 
+sub new { 
+   require Object::Internal::0;
+   my ($class, @opts) = @_;
+   bless { _internal = Object::Internal::0->new(@opts),
+         }, $class;
+}
+
+sub mu {shift->_internal};
+
+
+
+__END__
 # Be very careful not to import anything.
 require Scalar::Util;
 require Carp;
