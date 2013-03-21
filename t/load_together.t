@@ -17,6 +17,7 @@ use Test::More;
     package Bar;
     use perl5i::2;
 }
+use Data::Dumper::Simple;
 
 TODO:{
     local $TODO = "loading perl5i::1 and perl5i::2 together not entirely safe";
